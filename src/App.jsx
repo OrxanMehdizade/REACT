@@ -102,21 +102,34 @@ function App() {
 
 
     let [value,setValue]=useState('')
-    let [filteredArray,setFilteredArray]=useState([])
-
+    let [selectValue,setSelectValue]=useState('')
+    let [filteredArray,setFilteredArray]=useState([...arr])
+    let [priceValue,setPriceValue]=useState('')
+    let [objIndex,setObjIndex]=useState(null)
+    let [show,setShow]=useState(false)
 
     useEffect(()=>{
-        if(value===''){
-            setFilteredArray(arr)
-        }
-        else{setFilteredArray(arr.filter((item)=> item.name===value))}
+        setFilteredArray(arr.filter((item)=> item.name.toLowerCase().startsWith(value.toLowerCase())))
 
+    },[value,arr])
 
-    },[value])
 
 
     return (
         <div>
+            <select onChange={(event)=>{
+                setSelectValue(event.target.value)
+                if(selectValue==='INCREASE'){
+                    setFilteredArray(filteredArray.sort((a,b)=>a.price-b.price))
+                }
+                else if(selectValue==='DECREASE'){
+                    setFilteredArray(filteredArray.sort((a,b)=>b.price-a.price))
+                }
+
+            }}>
+                <option value="INCREASE">INCREASE</option>
+                <option value="DECREASE">DECREASE</option>
+            </select>
             <input onChange={(event)=>{
                 setValue(event.target.value)
             }} type="text" />
@@ -125,16 +138,44 @@ function App() {
                 {filteredArray.map((item,index)=>{
                     return(
                         <li key={index}>
-                            <p>{item.name}</p>
-                            <p>{item.description}</p>
-                            <p>{item.price}</p>
+                            <input defaultValue={item.name} disabled={true}/>
+                            <input defaultValue={item.description} disabled={true}/>
+                            <input defaultValue={item.price} disabled={true}/>
+                            <button onClick={() => {
+
+                                let newArr = [...arr]
+                                let obj = arr.find((itemGoods) => item.id === itemGoods.id)
+                                newArr.splice(arr.indexOf(obj),1)
+                                setArr(newArr)
+                            }}>DELETE</button>
+                            <button onClick={()=>{
+                                let obj = arr.find((itemGoods) => item.id === itemGoods.id)
+                                setObjIndex(arr.indexOf(obj))
+                                setPriceValue(obj.price)
+                                setShow(true)
+
+                            }}>EDIT</button>
                         </li>
                     )
 
 
                 })}
             </ul>
-
+            {show && <div id="modal">
+                <div>
+                    <input defaultValue={priceValue} onChange={(event)=>{
+                        setPriceValue(event.target.value)
+                    }} type="text"/>
+                    <button onClick={()=>{
+                        let newArr = [...arr]
+                        let obj =newArr[objIndex]
+                        newArr[objIndex]={...obj,"price":priceValue}
+                        setShow(false)
+                        setArr(newArr)
+                    }}>EDIT</button>
+                </div>
+            </div>
+            }
 
         </div>
     );

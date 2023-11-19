@@ -1,7 +1,6 @@
 //import logo from './logo.svg';
 import './App.css';
-import { useEffect, useState } from 'react';
-
+import React, { useEffect, useState } from 'react';
 
 function App() {
     let [arr,setArr]=useState([
@@ -99,87 +98,89 @@ function App() {
             "id":16
         }
     ])
+    const [value, setValue] = useState('');
+    const [selectValue, setSelectValue] = useState('');
+    const [filteredArray, setFilteredArray] = useState([...arr]);
+    const [priceValue, setPriceValue] = useState('');
+    const [objIndex, setObjIndex] = useState(null);
+    const [show, setShow] = useState(false);
 
+    useEffect(() => {
+        setFilteredArray(arr.filter((item) => item.name.toLowerCase().startsWith(value.toLowerCase())));
+    }, [value, arr, selectValue]);
 
-    let [value,setValue]=useState('')
-    let [selectValue,setSelectValue]=useState('')
-    let [filteredArray,setFilteredArray]=useState([...arr])
-    let [priceValue,setPriceValue]=useState('')
-    let [objIndex,setObjIndex]=useState(null)
-    let [show,setShow]=useState(false)
+    const handleDelete = (itemId) => {
+        const newArr = arr.filter((item) => item.id !== itemId);
+        setArr(newArr);
+        setFilteredArray(newArr);
+    };
 
-    useEffect(()=>{
-        setFilteredArray(arr.filter((item)=> item.name.toLowerCase().startsWith(value.toLowerCase())))
-
-    },[value,arr])
-
-
+    const handleEdit = (item) => {
+        const index = arr.indexOf(item);
+        setObjIndex(index);
+        setPriceValue(item.price);
+        setShow(true);
+    };
 
     return (
         <div>
-            <select onChange={(event)=>{
-                setSelectValue(event.target.value)
-                if(selectValue==='INCREASE'){
-                    setFilteredArray(filteredArray.sort((a,b)=>a.price-b.price))
-                }
-                else if(selectValue==='DECREASE'){
-                    setFilteredArray(filteredArray.sort((a,b)=>b.price-a.price))
-                }
-
-            }}>
+            <select
+                onChange={(event) => {
+                    setSelectValue(event.target.value);
+                    if (event.target.value === 'INCREASE') {
+                        setFilteredArray([...filteredArray].sort((a, b) => a.price - b.price));
+                    } else if (event.target.value === 'DECREASE') {
+                        setFilteredArray([...filteredArray].sort((a, b) => b.price - a.price));
+                    }
+                }}
+            >
                 <option value="INCREASE">INCREASE</option>
                 <option value="DECREASE">DECREASE</option>
             </select>
-            <input onChange={(event)=>{
-                setValue(event.target.value)
-            }} type="text" />
+            <input
+                onChange={(event) => {
+                    setValue(event.target.value);
+                }}
+                type="text"
+            />
             <p>{value}</p>
             <ul>
-                {filteredArray.map((item,index)=>{
-                    return(
-                        <li key={index}>
-                            <input defaultValue={item.name} disabled={true}/>
-                            <input defaultValue={item.description} disabled={true}/>
-                            <input defaultValue={item.price} disabled={true}/>
-                            <button onClick={() => {
-
-                                let newArr = [...arr]
-                                let obj = arr.find((itemGoods) => item.id === itemGoods.id)
-                                newArr.splice(arr.indexOf(obj),1)
-                                setArr(newArr)
-                            }}>DELETE</button>
-                            <button onClick={()=>{
-                                let obj = arr.find((itemGoods) => item.id === itemGoods.id)
-                                setObjIndex(arr.indexOf(obj))
-                                setPriceValue(obj.price)
-                                setShow(true)
-
-                            }}>EDIT</button>
-                        </li>
-                    )
-
-
-                })}
+                {filteredArray.map((item) => (
+                    <li key={item.id}>
+                        <input defaultValue={item.name} disabled={true} />
+                        <input defaultValue={item.description} disabled={true} />
+                        <input defaultValue={item.price} disabled={true} />
+                        <button onClick={() => handleDelete(item.id)}>DELETE</button>
+                        <button onClick={() => handleEdit(item)}>EDIT</button>
+                    </li>
+                ))}
             </ul>
-            {show && <div id="modal">
-                <div>
-                    <input defaultValue={priceValue} onChange={(event)=>{
-                        setPriceValue(event.target.value)
-                    }} type="text"/>
-                    <button onClick={()=>{
-                        let newArr = [...arr]
-                        let obj =newArr[objIndex]
-                        newArr[objIndex]={...obj,"price":priceValue}
-                        setShow(false)
-                        setArr(newArr)
-                    }}>EDIT</button>
+            {show && (
+                <div id="modal">
+                    <div>
+                        <input
+                            defaultValue={priceValue}
+                            onChange={(event) => {
+                                setPriceValue(event.target.value);
+                            }}
+                            type="text"
+                        />
+                        <button
+                            onClick={() => {
+                                const newArr = [...arr];
+                                newArr[objIndex] = { ...newArr[objIndex], price: parseInt(priceValue) };
+                                setArr(newArr);
+                                setFilteredArray(newArr);
+                                setShow(false);
+                            }}
+                        >
+                            EDIT
+                        </button>
+                    </div>
                 </div>
-            </div>
-            }
-
+            )}
         </div>
     );
 }
-
 
 export default App;

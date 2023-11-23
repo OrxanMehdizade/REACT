@@ -55,19 +55,53 @@ ul li{
 
 }
 
-#modal{
-  height: 100vh;
-  width: 100%;
-  position: fixed;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 99;
+.countenirDiv{
+  margin: 0 auto;
+  border: 3px solid white;
+  width: 600px;
+  height: 600px;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
+  border-radius: 5px ;
+
+
+}
+.headerAll li {
   background-color: red;
-  top: 0;
+  height: 20px;
+  width: 100px;
+  text-align: center;
+  margin-left: auto;
+
+
+
+}
+.headerAll li:hover{
+  background-color: #61dafb;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
+
 }
 
-#modal div{
-  padding: 20px;
-  border: 2px solid black;
+#homeID,#aboutID{
+  text-decoration: none;
+  color: white;
+
+}
+
+.HomeCss li{
+  background-color: red;
+  height: 20px;
+  width: 150px;
+  text-align: center;
+  margin-left: auto;
+}
+.HomeCss li:hover{
+  background-color: #61dafb;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
+
+}
+
+#CommentsID,#PostsID{
+  text-decoration: none;
+  color: white
 }

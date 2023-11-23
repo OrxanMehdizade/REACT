@@ -1,0 +1,79 @@
+.countenirDiv{
+    margin-top: 30px;
+    padding-top: 10px;
+}
+
+.countenir-div{
+    width: 500px;
+    border: 2px solid white;
+    margin: 0 auto;
+    height: 500px;
+    border-radius: 5px;
+
+
+    box-shadow: 0 0 10px rgba(0,0,0,0.9);
+}
+
+.inputsDivCss {
+    display: flex;
+    flex-direction: column;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    gap: 10px;
+    max-width: 400px;
+}
+
+.inputsDivCss input {
+    padding: 8px;
+    border: 2px solid #ccc;
+    width: 100%;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    transition: box-shadow 0.2s, border 0.2s;
+}
+
+.inputsDivCss input:hover{
+    box-shadow: 0 0 10px rgba(0,0,0,0.9);
+    border: 10px solid white;
+}
+
+.inputsDivCss input:focus{
+    outline: none;
+}
+
+.buttonDivCss{
+    margin-top:5px;
+}
+
+#checkbox-label{
+    font-size: 11px;
+    margin-right: 5px;
+    margin-left: 15px;
+}
+
+#arrDiv{
+    margin-top: 15px;
+    height: 200px;
+    overflow-y: scroll;
+    text-align: left;
+    & p{
+        margin-left: 50px;
+    }
+}
+
+#addButtonId, #deleteButtonId{
+    margin: 5px;
+
+
+}
+#updateButtonId, #addButtonId, #deleteButtonId{
+    background: white;
+    border: 2px solid white;
+}
+
+#updateButtonId:hover, #addButtonId:hover, #deleteButtonId:hover{
+    background: blue;
+    color: white;
+    border: 2px solid white;
+}
